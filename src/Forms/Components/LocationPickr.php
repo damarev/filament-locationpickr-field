@@ -27,6 +27,8 @@ class LocationPickr extends Field
 
     protected string | Closure | null $myLocationButtonLabel = null;
 
+    protected string | Closure | null $sourceAddress = null;
+
     private array $mapConfig = [
         'draggable' => true,
         'clickable' => false,
@@ -158,6 +160,18 @@ class LocationPickr extends Field
         return $this->evaluate($this->myLocationButtonLabel) ?? config('filament-locationpickr-field.my_location_button');
     }
 
+    public function sourceAddress(string | Closure $sourceAddress): static
+    {
+        $this->sourceAddress = $sourceAddress;
+
+        return $this;
+    }
+
+    public function getSourceAddress(): string
+    {
+        return $this->evaluate($this->sourceAddress) ?? '';
+    }
+
     /**
      * @throws JsonException
      */
@@ -165,14 +179,15 @@ class LocationPickr extends Field
     {
         return json_encode(
             array_merge($this->mapConfig, [
+                'statePath' => $this->getStatePath(),
                 'draggable' => $this->getDraggable(),
                 'clickable' => $this->getClickable(),
                 'defaultLocation' => $this->getDefaultLocation(),
-                'statePath' => $this->getStatePath(),
-                'controls' => $this->getMapControls(),
                 'defaultZoom' => $this->getDefaultZoom(),
+                'controls' => $this->getMapControls(),
                 'myLocationButtonLabel' => $this->getMyLocationButtonLabel(),
                 'apiKey' => config('filament-locationpickr-field.key'),
+                'sourceAddress' => $this->getSourceAddress(),
             ]),
             JSON_THROW_ON_ERROR
         );

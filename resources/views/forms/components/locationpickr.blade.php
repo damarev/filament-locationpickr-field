@@ -16,7 +16,7 @@
         <div
             x-ref="map"
             class="locationPickr w-full"
-            style="height: {{ $getHeight() }}"
+            style="min-height: 30vh; height: {{ $getHeight() }}; z-index: 1;"
         ></div>
     </div>
 </x-dynamic-component>

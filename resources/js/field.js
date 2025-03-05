@@ -21,6 +21,8 @@ export default function locationPickrField({ location, config }) {
                 zoomControl: false,
             },
             myLocationButtonLabel: '',
+            sourceAddress: '',
+            defaultRegion: 'es',
             defaultLocation: {
                 lat: 0,
                 lng: 0,
@@ -76,16 +78,70 @@ export default function locationPickrField({ location, config }) {
                         )
                     }
 
-                    const locationButtonDiv = document.createElement('div')
-                    locationButtonDiv.classList.add('location-div')
-                    locationButtonDiv.appendChild(this.createLocationButton())
+                    const mapTools = document.createElement('div')
+                    mapTools.classList.add('map-tools')
+
+                    mapTools.appendChild(this.createSearchInput())
+
+                    if (this.config.sourceAddress) {
+                        mapTools.appendChild(this.createFindmeButton())
+                    }
+
+                    const inputElement = document.createElement('input')
+                    inputElement.type = 'text'
+                    inputElement.placeholder = 'Search...'
+
+                    const searchBox = new google.maps.places.SearchBox(
+                        inputElement,
+                    )
+
+                    searchBox.addListener('places_changed', () => {
+                        inputElement.value = ''
+                        map.setZoom(18)
+                        console.log(searchBox.getPlaces())
+                        this.setMarkerLocation(
+                            searchBox.getPlaces()[0].geometry.location,
+                        )
+                    })
+
+                    // mapTools.appendChild(this.createLocationButton())
                     this.map.controls[
                         google.maps.ControlPosition.TOP_LEFT
-                    ].push(locationButtonDiv)
+                    ].push(mapTools)
                 })
                 .catch((error) => {
                     console.error('Error loading Google Maps API:', error)
                 })
+        },
+
+        createSearchInput: function () {
+            const inputElement = document.createElement('input')
+            inputElement.type = 'text'
+            inputElement.placeholder = 'Search...'
+            inputElement.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault()
+                    console.log(`You entered: ${inputElement.value}`)
+                    this.fetchGeolocation(inputElement.value)
+                    inputElement.value = ''
+                }
+            })
+
+            return inputElement
+        },
+
+        createFindmeButton: function () {
+            const button = document.createElement('button')
+            button.type = 'button'
+            button.title = this.config.sourceAddress
+            // button.textContent = this.config.mybuttonLabel
+            button.classList.add('findme')
+            button.addEventListener('click', (event) => {
+                event.preventDefault()
+                this.fetchGeolocation(this.config.sourceAddress)
+            })
+
+            return button
         },
 
         createLocationButton: function () {
@@ -133,6 +189,17 @@ export default function locationPickrField({ location, config }) {
             this.map.panTo(this.markerLocation)
         },
 
+        setMarkerLocation: function (lat, lng) {
+            this.markerLocation = {
+                lat,
+                lng,
+            }
+            this.setCoordinates(this.markerLocation)
+            this.marker.setPosition(this.markerLocation)
+            this.map.panTo(this.markerLocation)
+            this.map.setZoom(18)
+        },
+
         updateMapFromAlpine: function () {
             const location = this.getCoordinates()
             const markerLocation = this.marker.getPosition()
@@ -144,6 +211,33 @@ export default function locationPickrField({ location, config }) {
             ) {
                 this.updateMap(location)
             }
+        },
+
+        fetchGeolocation: function (address) {
+            const queryString = new URLSearchParams({
+                key: this.config.apiKey,
+                region: this.defaultRegion,
+                address,
+            }).toString()
+
+            const url = `https://maps.googleapis.com/maps/api/geocode/json?${queryString}`
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === 'OK') {
+                        this.setMarkerLocation(
+                            data.results[0].geometry.location.lat,
+                            data.results[0].geometry.location.lng,
+                        )
+                    } else {
+                        throw new Error('ERR: No results!')
+                    }
+                })
+                .catch((error) => {
+                    console.error('ERR: Error making request:', error)
+                    alert('Error making request: ' + error)
+                })
         },
 
         updateMap: function (position) {
@@ -167,7 +261,6 @@ export default function locationPickrField({ location, config }) {
                     lng: this.config.defaultLocation.lng,
                 }
             }
-
             return location
         },
 

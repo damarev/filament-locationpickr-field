@@ -18,7 +18,7 @@ return [
 
     'default_draggable' => true,
 
-    'default_clickable' => true,
+    'default_clickable' => false,
 
     'default_height' => '400px',
 

@@ -12,6 +12,7 @@
         "field",
         "php"
     ],
+    "version": "1.0.0",
     "homepage": "https://github.com/arbermustafa/filament-locationpickr-field",
     "type": "library",
     "license": "MIT",
