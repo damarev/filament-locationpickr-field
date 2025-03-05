@@ -87,22 +87,22 @@ export default function locationPickrField({ location, config }) {
                         mapTools.appendChild(this.createFindmeButton())
                     }
 
-                    const inputElement = document.createElement('input')
-                    inputElement.type = 'text'
-                    inputElement.placeholder = 'Search...'
+                    // const inputElement = document.createElement('input')
+                    // inputElement.type = 'text'
+                    // inputElement.placeholder = 'Search...'
 
-                    const searchBox = new google.maps.places.SearchBox(
-                        inputElement,
-                    )
+                    // const searchBox = new google.maps.places.SearchBox(
+                    //     inputElement,
+                    // )
 
-                    searchBox.addListener('places_changed', () => {
-                        inputElement.value = ''
-                        map.setZoom(18)
-                        console.log(searchBox.getPlaces())
-                        this.setMarkerLocation(
-                            searchBox.getPlaces()[0].geometry.location,
-                        )
-                    })
+                    // searchBox.addListener('places_changed', () => {
+                    //     inputElement.value = ''
+                    //     map.setZoom(18)
+                    //     console.log(searchBox.getPlaces())
+                    //     this.setMarkerLocation(
+                    //         searchBox.getPlaces()[0].geometry.location,
+                    //     )
+                    // })
 
                     // mapTools.appendChild(this.createLocationButton())
                     this.map.controls[
