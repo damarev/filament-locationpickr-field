@@ -7,7 +7,7 @@ return [
     | Default Plugin Options
     |--------------------------------------------------------------------------
     */
-    'key' => env('GOOGLE_MAPS_API_KEY', ''),
+    'api_key' => env('GOOGLE_MAPS_API_KEY', ''),
 
     'default_location' => [
         'lat' => 41.32836109345274,

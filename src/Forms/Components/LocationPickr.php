@@ -13,6 +13,8 @@ class LocationPickr extends Field
 
     private int $precision = 8;
 
+    protected string | Closure $apiKey = '';
+
     protected array | Closure | null $defaultLocation = [0, 0];
 
     protected int | Closure $defaultZoom = 8;
@@ -51,6 +53,18 @@ class LocationPickr extends Field
         'fullscreenControl' => true,
         'zoomControl' => false,
     ];
+
+    public function apiKey(string | Closure $apiKey): static
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    public function getApiKey(): string
+    {
+        return $this->evaluate($this->apiKey) ?? config('filament-locationpickr-field.api_key');
+    }
 
     public function defaultLocation(array | Closure $defaultLocation): static
     {
@@ -126,14 +140,11 @@ class LocationPickr extends Field
         return $this;
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function getMapControls(): string
+    public function getMapControls(): array
     {
         $controls = $this->evaluate($this->mapControls) ?? [];
 
-        return json_encode(array_merge($this->controls, $controls), JSON_THROW_ON_ERROR);
+        return array_merge($this->controls, $controls);
     }
 
     public function height(string | Closure $height): static
@@ -180,13 +191,13 @@ class LocationPickr extends Field
         return json_encode(
             array_merge($this->mapConfig, [
                 'statePath' => $this->getStatePath(),
+                'apiKey' => $this->getApiKey(),
                 'draggable' => $this->getDraggable(),
                 'clickable' => $this->getClickable(),
                 'defaultLocation' => $this->getDefaultLocation(),
                 'defaultZoom' => $this->getDefaultZoom(),
                 'controls' => $this->getMapControls(),
                 'myLocationButtonLabel' => $this->getMyLocationButtonLabel(),
-                'apiKey' => config('filament-locationpickr-field.key'),
                 'sourceAddress' => $this->getSourceAddress(),
             ]),
             JSON_THROW_ON_ERROR

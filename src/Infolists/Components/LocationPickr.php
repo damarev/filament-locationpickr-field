@@ -9,11 +9,25 @@ class LocationPickr extends Entry
 {
     protected string $view = 'filament-locationpickr-field::infolists.components.locationpickr';
 
+    protected string | Closure $apiKey = '';
+
     protected array | Closure | null $defaultLocation = [0, 0];
 
     protected int | Closure $defaultZoom = 8;
 
     protected string | Closure $height = '400px';
+
+    public function apiKey(string|Closure $apiKey): static
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    public function getApiKey(): string
+    {
+        return $this->evaluate($this->apiKey) ?? config('filament-locationpickr-field.api_key');
+    }
 
     public function defaultLocation(array | Closure $defaultLocation): static
     {
@@ -78,7 +92,7 @@ class LocationPickr extends Entry
         return json_encode([
             'defaultLocation' => $this->getDefaultLocation(),
             'defaultZoom' => $this->getDefaultZoom(),
-            'apiKey' => config('filament-locationpickr-field.key'),
+            'apiKey' => $this->getApiKey(),
         ], JSON_THROW_ON_ERROR);
     }
 }
