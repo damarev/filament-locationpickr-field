@@ -1,39 +1,44 @@
 div.map-tools {
-    margin: 10px;
-    display: flex;
-    align-items: center;
+    @apply m-[10px] flex gap-2 items-center;
 
-    button.findme {
-        width: 32px;
-        height: 32px;
-        background-size: contain;
+    input.search-location {
+        @apply shadow-sm border-none;
+    }
+
+    button.find-address-btn {
+        @apply shadow-sm;
+        width: 34px;
+        height: 34px;
+        background-size: 26px;
         background-position: center;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z' clip-rule='evenodd'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-color: white;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M12 15c1.6569 0 3-1.3431 3-3s-1.3431-3-3-3-3 1.3431-3 3 1.3431 3 3 3z'%3E%3C/path%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M18.9205 13H21v-2h-2.0795A6.9929 6.9929 0 0 0 13 5.08V3h-2v2.08A6.9928 6.9928 0 0 0 5.08 11H3v2h2.08A6.9924 6.9924 0 0 0 11 18.9205V21h2v-2.0795A6.9927 6.9927 0 0 0 18.9205 13zm-2.7632-3.7779A4.9993 4.9993 0 0 1 17 12a5.006 5.006 0 0 1-1.4661 3.5339A5.006 5.006 0 0 1 12 17a5 5 0 1 1 4.1573-7.7779z'%3E%3C/path%3E%3C/svg%3E");
         &:hover {
-            opacity: 0.8;
+            background-color: #ebebeb;
         }
     }
-}
 
-button.location-button {
-    background: rgb(255, 255, 255);
-    display: table-cell;
-    border: 0px none;
-    margin: 0px;
-    padding: 0px 17px;
-    cursor: pointer;
-    text-align: center;
-    height: 40px;
-    vertical-align: middle;
-    color: rgb(86, 86, 86);
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 18px;
-    border-radius: 2px;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-    min-width: 66px;
-}
+    button.my-location-btn {
+        background: rgb(255, 255, 255);
+        display: table-cell;
+        border: 0px none;
+        margin: 0px;
+        padding: 0px 17px;
+        cursor: pointer;
+        text-align: center;
+        height: 40px;
+        vertical-align: middle;
+        color: rgb(86, 86, 86);
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 18px;
+        border-radius: 2px;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+        min-width: 66px;
+    }
 
-button.location-button:hover {
-    background: rgb(235, 235, 235) padding-box;
-    color: rgb(0, 0, 0);
+    button.my-location-btn:hover {
+        background: rgb(235, 235, 235) padding-box;
+        color: rgb(0, 0, 0);
+    }
 }

@@ -115,19 +115,21 @@ export default function locationPickrField({ location, config }) {
         },
 
         createSearchInput: function () {
-            const inputElement = document.createElement('input')
-            inputElement.type = 'text'
-            inputElement.placeholder = 'Search...'
-            inputElement.addEventListener('keydown', (event) => {
+            const inputEl = document.createElement('input')
+            inputEl.type = 'text'
+            inputEl.placeholder = 'Search location...'
+            inputEl.classList.add('search-location')
+
+            inputEl.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault()
-                    console.log(`You entered: ${inputElement.value}`)
-                    this.fetchGeolocation(inputElement.value)
-                    inputElement.value = ''
+                    console.log(`You entered: ${inputEl.value}`)
+                    this.fetchGeolocation(inputEl.value)
+                    inputEl.value = ''
                 }
             })
 
-            return inputElement
+            return inputEl
         },
 
         createFindmeButton: function () {
@@ -135,9 +137,11 @@ export default function locationPickrField({ location, config }) {
             button.type = 'button'
             button.title = this.config.sourceAddress
             // button.textContent = this.config.mybuttonLabel
-            button.classList.add('findme')
+            button.classList.add('find-address-btn')
             button.addEventListener('click', (event) => {
                 event.preventDefault()
+                const me = event.currentTarget
+                me.previousSibling.value = me.title
                 this.fetchGeolocation(this.config.sourceAddress)
             })
 
@@ -148,7 +152,7 @@ export default function locationPickrField({ location, config }) {
             const locationButton = document.createElement('button')
             locationButton.type = 'button'
             locationButton.textContent = this.config.myLocationButtonLabel
-            locationButton.classList.add('location-button')
+            locationButton.classList.add('my-location-btn')
             locationButton.addEventListener('click', (event) => {
                 event.preventDefault()
                 if (navigator.geolocation) {
